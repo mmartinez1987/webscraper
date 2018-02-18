@@ -1,0 +1,37 @@
+import urllib2
+import lexus_uris #constants list
+
+class pull_data(object):
+	
+	def __init__(self, list):
+		self.list = list
+		
+
+
+	def pull_info(self):
+		try:	
+			list = self.list
+			print('list created')
+			for x in range(0,len(list)):
+				print('Attempting to open %s' % list[x])
+				request = urllib2.Request('https://ksl.com/%s' % list[x], headers={'User-agent' : 'Mozilla/5.0'})
+				page = urllib2.urlopen(request).read()
+				name = list[x]
+				name = str(name[13:])
+				print(name)
+				print(page)
+				f = open('car_data/%s.txt' % name, 'w')
+				print('%s file created' % name)
+				f.write(page)
+				print('info written to file')
+				f.close()
+		except Exception as e:
+			print('Exception:', e)
+
+def main():
+	data = pull_data(lexus_uris.uris)
+	data.pull_info()
+
+if __name__ == '__main__':
+	main()
+	
